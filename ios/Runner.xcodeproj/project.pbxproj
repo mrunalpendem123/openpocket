@@ -266,6 +266,9 @@
 			dependencies = (
 			);
 			name = Runner;
+			packageProductDependencies = (
+				OP0003000000000000000003 /* LeapSDK */,
+			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
@@ -298,6 +301,9 @@
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				OP0004000000000000000004 /* XCRemoteSwiftPackageReference "leap-ios" */,
+			);
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 			);
@@ -1366,6 +1372,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		OP0004000000000000000004 /* XCRemoteSwiftPackageReference "leap-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Liquid4All/leap-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.9.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		OP0003000000000000000003 /* LeapSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = OP0004000000000000000004 /* XCRemoteSwiftPackageReference "leap-ios" */;
+			productName = LeapSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }

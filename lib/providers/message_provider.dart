@@ -29,6 +29,7 @@ import 'package:openpocket/utils/analytics/mixpanel.dart';
 import 'package:openpocket/utils/file.dart';
 import 'package:openpocket/utils/logger.dart';
 import 'package:openpocket/utils/platform/platform_service.dart';
+import 'package:openpocket/services/leap_service.dart';
 
 class MessageProvider extends ChangeNotifier {
   static late MethodChannel _askAIChannel;
@@ -582,20 +583,35 @@ class MessageProvider extends ChangeNotifier {
   }
 
   Future sendMessageStreamToServer(String text) async {
-    // Offline mode: cloud chat endpoints are stubbed out.
-    // Show a placeholder response instead of silently failing.
     var currentAppId = appProvider?.selectedChatAppId;
     if (currentAppId == 'no_selected') {
       currentAppId = null;
     }
 
     var message = ServerMessage.empty(appId: currentAppId);
-    message.text = 'Chat requires LEAP models (coming soon)';
     messages.add(message);
     clearSelectedFiles();
     clearUploadedFiles();
     notifyListeners();
 
+    try {
+      final leapService = LeapService.instance;
+      if (!leapService.isTextModelLoaded) {
+        await leapService.loadModel('text');
+      }
+
+      if (leapService.isTextModelLoaded) {
+        // Use LEAP text model for on-device chat
+        final result = await leapService.chat(text);
+        message.text = result.isNotEmpty ? result : 'No response generated.';
+      } else {
+        message.text = 'Text model not available. Download models from Settings.';
+      }
+    } catch (e) {
+      message.text = 'Error: ${e.toString()}';
+    }
+
+    notifyListeners();
     aiStreamProgress = 1.0;
     setShowTypingIndicator(false);
     setSendingMessage(false);

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 
@@ -48,9 +49,9 @@ class LeapService {
         return {'title': 'Conversation', 'overview': transcript, 'actionItems': []};
       }
       // Parse JSON result from native
-      return Map<String, dynamic>.from(
-        await _channel.invokeMethod('summarize', {'transcript': transcript}) as Map? ?? {}
-      );
+      final parsed = jsonDecode(result);
+      if (parsed is Map<String, dynamic>) return parsed;
+      return {'title': 'Conversation', 'overview': transcript, 'actionItems': []};
     } on PlatformException catch (e) {
       print('LEAP summarization failed: ${e.message}');
       return {'title': 'Conversation', 'overview': transcript, 'actionItems': []};
@@ -82,6 +83,19 @@ class LeapService {
     } on PlatformException catch (e) {
       print('LEAP model download failed: ${e.message}');
       return false;
+    }
+  }
+
+  /// Send a chat message to the text model and get a response
+  Future<String> chat(String message) async {
+    try {
+      final result = await _channel.invokeMethod<String>('chat', {
+        'message': message,
+      });
+      return result ?? '';
+    } on PlatformException catch (e) {
+      print('LEAP chat failed: ${e.message}');
+      return '';
     }
   }
 
