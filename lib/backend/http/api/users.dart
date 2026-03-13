@@ -5,11 +5,11 @@ import 'package:openpocket/models/subscription.dart';
 import 'package:openpocket/models/user_usage.dart';
 
 Future<bool> updateUserGeolocation({required Geolocation geolocation}) async {
-  return false;
+  return true;
 }
 
 Future<bool> setUserWebhookUrl({required String type, required String url}) async {
-  return false;
+  return true;
 }
 
 Future<String> getUserWebhookUrl({required String type}) async {
@@ -17,11 +17,11 @@ Future<String> getUserWebhookUrl({required String type}) async {
 }
 
 Future disableWebhook({required String type}) async {
-  return false;
+  return true;
 }
 
 Future enableWebhook({required String type}) async {
-  return false;
+  return true;
 }
 
 Future webhooksStatus() async {
@@ -29,11 +29,11 @@ Future webhooksStatus() async {
 }
 
 Future<bool> deleteAccount() async {
-  return false;
+  return true;
 }
 
 Future<bool> setRecordingPermission(bool value) async {
-  return false;
+  return true;
 }
 
 Future<bool?> getStoreRecordingPermission() async {
@@ -41,15 +41,15 @@ Future<bool?> getStoreRecordingPermission() async {
 }
 
 Future<bool> deletePermissionAndRecordings() async {
-  return false;
+  return true;
 }
 
 Future<bool> setPrivateCloudSyncEnabled(bool value) async {
-  return false;
+  return true;
 }
 
 Future<bool> getPrivateCloudSyncEnabled() async {
-  return false;
+  return true;
 }
 
 Future<Person?> createPerson(String name) async {
@@ -65,15 +65,15 @@ Future<List<Person>> getAllPeople({bool includeSpeechSamples = true}) async {
 }
 
 Future<bool> updatePersonName(String personId, String newName) async {
-  return false;
+  return true;
 }
 
 Future<bool> deletePerson(String personId) async {
-  return false;
+  return true;
 }
 
 Future<bool> deletePersonSpeechSample(String personId, int sampleIndex) async {
-  return false;
+  return true;
 }
 
 Future<String> getFollowUpQuestion({String conversationId = '0'}) async {
@@ -81,15 +81,15 @@ Future<String> getFollowUpQuestion({String conversationId = '0'}) async {
 }
 
 Future<bool> setConversationSummaryRating(String conversationId, int value, {String? reason}) async {
-  return false;
+  return true;
 }
 
 Future<bool> setMessageResponseRating(String messageId, int value, {String? reason}) async {
-  return false;
+  return true;
 }
 
 Future<bool> getHasConversationSummaryRating(String conversationId) async {
-  return false;
+  return true;
 }
 
 Future<String?> getUserPrimaryLanguage() async {
@@ -97,11 +97,11 @@ Future<String?> getUserPrimaryLanguage() async {
 }
 
 Future<bool> setUserPrimaryLanguage(String languageCode) async {
-  return false;
+  return true;
 }
 
 Future<bool> setPreferredSummarizationAppServer(String appId) async {
-  return false;
+  return true;
 }
 
 Future<UserUsageResponse?> getUserUsage({required String period}) async {
@@ -113,7 +113,7 @@ Future<Map<String, dynamic>> getTrainingDataOptIn() async {
 }
 
 Future<bool> setTrainingDataOptIn() async {
-  return false;
+  return true;
 }
 
 Future<Map<String, dynamic>?> getTranscriptionPreferences() async {
@@ -124,7 +124,7 @@ Future<bool> setTranscriptionPreferences({
   bool? singleLanguageMode,
   List<String>? vocabulary,
 }) async {
-  return false;
+  return true;
 }
 
 Future<UserSubscriptionResponse?> getUserSubscription() async {
@@ -150,7 +150,7 @@ Future<DailySummarySettings?> getDailySummarySettings() async {
 }
 
 Future<bool> setDailySummarySettings({bool? enabled, int? hour}) async {
-  return false;
+  return true;
 }
 
 Future<List<DailySummary>> getDailySummaries({int limit = 30, int offset = 0}) async {
@@ -162,7 +162,7 @@ Future<DailySummary?> getDailySummary(String summaryId) async {
 }
 
 Future<bool> deleteDailySummary(String summaryId) async {
-  return false;
+  return true;
 }
 
 Future<String?> generateDailySummary({String? date}) async {
@@ -174,7 +174,7 @@ Future<Map<String, dynamic>?> getUserOnboardingState() async {
 }
 
 Future<bool> updateUserOnboardingState({bool? completed, String? acquisitionSource}) async {
-  return false;
+  return true;
 }
 
 class MentorNotificationSettings {
@@ -194,7 +194,7 @@ Future<MentorNotificationSettings?> getMentorNotificationSettings() async {
 }
 
 Future<bool> setMentorNotificationSettings(int frequency) async {
-  return false;
+  return true;
 }
 
 Future<String?> exportUserDataToFile(String filePath) async {

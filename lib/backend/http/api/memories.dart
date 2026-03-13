@@ -5,7 +5,7 @@ Future<Memory?> createMemoryServer(String content, String visibility, String cat
 }
 
 Future<bool> updateMemoryVisibilityServer(String memoryId, String visibility) async {
-  return false;
+  return true;
 }
 
 Future<List<Memory>> getMemories({int limit = 100, int offset = 0}) async {
@@ -13,13 +13,13 @@ Future<List<Memory>> getMemories({int limit = 100, int offset = 0}) async {
 }
 
 Future<bool> deleteMemoryServer(String memoryId) async {
-  return false;
+  return true;
 }
 
 Future<bool> deleteAllMemoriesServer() async {
-  return false;
+  return true;
 }
 
 Future<bool> editMemoryServer(String memoryId, String value) async {
-  return false;
+  return true;
 }

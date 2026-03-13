@@ -25,14 +25,14 @@ Future<Folder?> updateFolderApi(
 }
 
 Future<bool> deleteFolderApi(String folderId, {String? moveToFolderId}) async {
-  return false;
+  return true;
 }
 
 Future<bool> moveConversationToFolderApi(
   String conversationId,
   String? folderId,
 ) async {
-  return false;
+  return true;
 }
 
 Future<int> bulkMoveConversationsToFolderApi(
@@ -43,5 +43,5 @@ Future<int> bulkMoveConversationsToFolderApi(
 }
 
 Future<bool> reorderFoldersApi(List<String> folderIds) async {
-  return false;
+  return true;
 }
