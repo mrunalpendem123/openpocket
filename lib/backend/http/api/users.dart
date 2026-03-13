@@ -1,3 +1,4 @@
+import 'package:openpocket/backend/preferences.dart';
 import 'package:openpocket/backend/schema/daily_summary.dart';
 import 'package:openpocket/backend/schema/geolocation.dart';
 import 'package:openpocket/backend/schema/person.dart';
@@ -93,7 +94,9 @@ Future<bool> getHasConversationSummaryRating(String conversationId) async {
 }
 
 Future<String?> getUserPrimaryLanguage() async {
-  return null;
+  // Offline mode: return saved preference or default to English
+  final saved = SharedPreferencesUtil().userPrimaryLanguage;
+  return saved.isNotEmpty ? saved : 'en';
 }
 
 Future<bool> setUserPrimaryLanguage(String languageCode) async {

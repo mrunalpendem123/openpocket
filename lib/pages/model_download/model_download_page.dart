@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:openpocket/services/leap_service.dart';
 import 'package:openpocket/backend/preferences.dart';
+import 'package:openpocket/pages/home/page.dart';
 
 class ModelDownloadPage extends StatefulWidget {
   const ModelDownloadPage({super.key});
@@ -67,7 +68,10 @@ class _ModelDownloadPageState extends State<ModelDownloadPage> {
 
   void _continue() {
     SharedPreferencesUtil().modelsDownloaded = true;
-    Navigator.of(context).pushReplacementNamed('/home');
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const HomePageWrapper()),
+      (route) => false,
+    );
   }
 
   @override
