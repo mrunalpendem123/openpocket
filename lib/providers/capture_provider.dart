@@ -980,9 +980,10 @@ class CaptureProvider extends ChangeNotifier
   }
 
   stopStreamRecording() async {
-    await _cleanupCurrentState();
-    ServiceManager.instance().mic.stop();
+    // Update state immediately so UI reflects stop right away
     updateRecordingState(RecordingState.stop);
+    ServiceManager.instance().mic.stop();
+    await _cleanupCurrentState();
     await _socket?.stop(reason: 'stop stream recording');
   }
 
@@ -1004,11 +1005,12 @@ class CaptureProvider extends ChangeNotifier
   }
 
   Future stopStreamDeviceRecording({bool cleanDevice = false}) async {
-    await _cleanupCurrentState();
+    // Update state immediately so UI reflects stop right away
+    updateRecordingState(RecordingState.stop);
     if (cleanDevice) {
       _updateRecordingDevice(null);
     }
-    updateRecordingState(RecordingState.stop);
+    await _cleanupCurrentState();
     await _socket?.stop(reason: 'stop stream device recording');
   }
 

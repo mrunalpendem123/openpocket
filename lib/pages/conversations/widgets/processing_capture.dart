@@ -41,7 +41,30 @@ class _ConversationCaptureWidgetState extends State<ConversationCaptureWidget> {
 
       var header = _getConversationHeader(context);
       if (header == null) {
-        return const SizedBox.shrink();
+        // Show info banner when not recording - helps user understand why nothing is happening
+        return Container(
+          margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1F1F25),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.info_outline, color: Colors.grey.shade500, size: 18),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Tap the mic button or connect a wearable to start recording',
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       }
 
       return GestureDetector(
@@ -165,8 +188,10 @@ class _ConversationCaptureWidgetState extends State<ConversationCaptureWidget> {
         captureProvider.isPaused ||
         _isPhoneMicPaused;
 
-    // Hide the widget when no recording is active and there are no segments or photos
-    if (!isAnyRecordingActive && !isHavingTranscript && !isHavingPhotos && !isHavingRecordingDevice) {
+    // Hide the widget when no recording is active and there are no segments or photos.
+    // Also hide when only a desire device is saved but no actual recording is happening
+    // (e.g., LEAP models not installed, no BLE device actually connected).
+    if (!isAnyRecordingActive && !isHavingTranscript && !isHavingPhotos) {
       return null;
     }
 
@@ -309,9 +334,19 @@ class _ConversationCaptureWidgetState extends State<ConversationCaptureWidget> {
 
     // Determine if this is an OmiGlass-type device (captures photos)
     bool hasPhotos = provider.photos.isNotEmpty;
-    String statusText = isPaused
-        ? (isDeviceRecording ? context.l10n.muted : context.l10n.paused)
-        : (hasPhotos ? 'Capturing' : context.l10n.listening);
+    // Only show "Listening" when the transcription service is actually ready
+    String statusText;
+    if (isPaused) {
+      statusText = isDeviceRecording ? context.l10n.muted : context.l10n.paused;
+    } else if (hasPhotos) {
+      statusText = 'Capturing';
+    } else if (provider.transcriptServiceReady) {
+      statusText = context.l10n.listening;
+    } else if (provider.recordingState == RecordingState.initialising) {
+      statusText = 'Connecting';
+    } else {
+      statusText = 'Starting';
+    }
 
     // When recording is active, show the unified UI design
     if (isDeviceRecording || isPhoneRecording) {
