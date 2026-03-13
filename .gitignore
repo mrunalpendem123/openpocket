@@ -1,0 +1,43 @@
+# Flutter/Dart
+*.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
+*.swp
+
+# Upstream source (reference only, not part of OpenPocket)
+omi-upstream/
+
+# Environment / secrets
+*.env
+.env.*
+**/dart_defines/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Android
+android/.gradle/
+android/local.properties
+android/key.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# Generated
+*.g.dart
+*.freezed.dart
+lib/env/dev_env.g.dart
+lib/env/prod_env.g.dart
+pubspec.lock
