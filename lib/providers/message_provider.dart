@@ -582,110 +582,23 @@ class MessageProvider extends ChangeNotifier {
   }
 
   Future sendMessageStreamToServer(String text) async {
-    aiStreamProgress = 0.0;
-    setShowTypingIndicator(true);
+    // Offline mode: cloud chat endpoints are stubbed out.
+    // Show a placeholder response instead of silently failing.
     var currentAppId = appProvider?.selectedChatAppId;
     if (currentAppId == 'no_selected') {
       currentAppId = null;
     }
 
-    String chatTargetId = currentAppId ?? 'omi';
-    App? targetApp = currentAppId != null ? appProvider?.apps.firstWhereOrNull((app) => app.id == currentAppId) : null;
-    bool isPersonaChat = targetApp != null ? !targetApp.isNotPersona() : false;
-
-    MixpanelManager().chatMessageSent(
-      message: text,
-      includesFiles: uploadedFiles.isNotEmpty,
-      numberOfFiles: uploadedFiles.length,
-      chatTargetId: chatTargetId,
-      isPersonaChat: isPersonaChat,
-      isVoiceInput: _isNextMessageFromVoice,
-    );
-    _isNextMessageFromVoice = false;
-
-    // Route through agent VM if Claude Agent is enabled
-    if (SharedPreferencesUtil().claudeAgentEnabled) {
-      agentLog('[MessageProvider] claudeAgentEnabled=true, routing through agent VM');
-      await _sendMessageViaAgent(text, currentAppId);
-      return;
-    }
-
-    await initAgentLog();
-    agentLog(
-        '[MessageProvider] sending via /v2/messages — appId=$currentAppId, text="${text.length > 80 ? text.substring(0, 80) : text}"');
-
     var message = ServerMessage.empty(appId: currentAppId);
+    message.text = 'Chat requires LEAP models (coming soon)';
     messages.add(message);
-    final aiIndex = messages.length - 1;
-    notifyListeners();
-    List<String> fileIds = uploadedFiles.map((e) => e.id).toList();
     clearSelectedFiles();
     clearUploadedFiles();
-    String textBuffer = '';
-    Timer? timer;
-    int chunkCount = 0;
+    notifyListeners();
 
-    void flushBuffer() {
-      if (textBuffer.isNotEmpty) {
-        message.text += textBuffer;
-        textBuffer = '';
-        aiStreamProgress = (aiStreamProgress + 0.05).clamp(0.0, 1.0);
-        HapticFeedback.lightImpact();
-        notifyListeners();
-      }
-    }
-
-    try {
-      await for (var chunk in sendMessageStreamServer(text, appId: currentAppId, filesId: fileIds)) {
-        chunkCount++;
-        if (chunk.type == MessageChunkType.think) {
-          flushBuffer();
-          agentLog('[MessageProvider] think: ${chunk.text.length > 100 ? chunk.text.substring(0, 100) : chunk.text}');
-          message.thinkings.add(chunk.text);
-          notifyListeners();
-          continue;
-        }
-
-        if (chunk.type == MessageChunkType.data) {
-          if (chunkCount <= 3) agentLog('[MessageProvider] first data chunk received');
-          textBuffer += chunk.text;
-          timer ??= Timer.periodic(const Duration(milliseconds: 100), (_) {
-            flushBuffer();
-          });
-          continue;
-        }
-
-        timer?.cancel();
-        timer = null;
-        flushBuffer();
-
-        if (chunk.type == MessageChunkType.done) {
-          agentLog('[MessageProvider] done — $chunkCount chunks, final text ${message.text.length} chars');
-          message = chunk.message!;
-          messages[aiIndex] = message;
-          notifyListeners();
-          continue;
-        }
-
-        if (chunk.type == MessageChunkType.error) {
-          agentLog('[MessageProvider] error: ${chunk.text}');
-          message.text = chunk.text;
-          notifyListeners();
-          continue;
-        }
-      }
-    } catch (e) {
-      agentLog('[MessageProvider] exception: $e');
-      message.text = ServerMessageChunk.failedMessage().text;
-      notifyListeners();
-    } finally {
-      timer?.cancel();
-      flushBuffer();
-      agentLog('[MessageProvider] stream complete — $chunkCount chunks total');
-      aiStreamProgress = 1.0;
-      setShowTypingIndicator(false);
-      setSendingMessage(false);
-    }
+    aiStreamProgress = 1.0;
+    setShowTypingIndicator(false);
+    setSendingMessage(false);
   }
 
   Future _sendMessageViaAgent(String text, String? appId) async {

@@ -298,10 +298,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, Ticker
       if (mounted) {
         await Provider.of<HomeProvider>(context, listen: false).setUserPeople();
       }
-      if (mounted) {
-        await Provider.of<CaptureProvider>(context, listen: false)
-            .streamDeviceRecording(device: Provider.of<DeviceProvider>(context, listen: false).connectedDevice);
-      }
+      // Disabled: auto-start recording hangs because cloud STT is stubbed out.
+      // if (mounted) {
+      //   await Provider.of<CaptureProvider>(context, listen: false)
+      //       .streamDeviceRecording(device: Provider.of<DeviceProvider>(context, listen: false).connectedDevice);
+      // }
 
       // Navigate
       if (!mounted) return;
@@ -694,9 +695,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, Ticker
                                             color: Colors.white,
                                           ),
                                           const SizedBox(width: 10),
-                                          Text(
-                                            context.l10n.askOmi,
-                                            style: const TextStyle(
+                                          const Text(
+                                            'Ask OpenPocket',
+                                            style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 17,
                                               fontWeight: FontWeight.w600,

@@ -80,7 +80,7 @@ Widget omiSelectionMenuBuilder(
   // Ask Omi
   if (text.trim().isNotEmpty) {
     toolbarItems.add(OmiToolbarAction(
-      label: context.l10n.askOmi,
+      label: 'Ask OpenPocket',
       onPressed: () {
         onAskOmi(text);
         delegate.hideToolbar();

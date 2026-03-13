@@ -1006,7 +1006,7 @@ class ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin {
         Container(
           constraints: const BoxConstraints(maxWidth: 140),
           child: Text(
-            selectedApp != null ? selectedApp.getName() : context.l10n.omiAppName,
+            selectedApp != null ? selectedApp.getName() : 'OpenPocket',
             style: const TextStyle(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
@@ -1112,7 +1112,7 @@ class ChatPageState extends State<ChatPage> with AutomaticKeepAliveClientMixin {
                       // Omi option
                       _buildDrawerAppItem(
                         avatar: _getOmiAvatar(),
-                        name: context.l10n.omiAppName,
+                        name: 'OpenPocket',
                         isSelected: isOmiSelected,
                         onTap: () {
                           Navigator.of(context).pop();

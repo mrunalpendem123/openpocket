@@ -1088,12 +1088,12 @@ class _PlansSheetState extends State<PlansSheet> {
                             const SizedBox(height: 16),
                             _buildFeatureItem(
                               faIcon: FontAwesomeIcons.solidComments,
-                              text: 'Ask Omi anything about your life',
+                              text: 'Ask OpenPocket anything about your life',
                             ),
                             const SizedBox(height: 16),
                             _buildFeatureItem(
                               faIcon: FontAwesomeIcons.brain,
-                              text: 'Unlock Omi\'s infinite memory',
+                              text: 'Unlock OpenPocket\'s infinite memory',
                             ),
                           ],
                         ),
